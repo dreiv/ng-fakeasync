@@ -3,16 +3,20 @@ import {
   ComponentFixture,
   TestBed,
   fakeAsync,
-  flushMicrotasks
+  flushMicrotasks,
+  tick
 } from '@angular/core/testing';
 
 import { UsersComponent } from './users.component';
 import { UsersService } from '../users.service';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { of, timer } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
+import { ReactiveFormsModule } from '@angular/forms';
 
 class MockUserService {
-  getUsers = () => Promise.resolve([]);
+  search = () => of([]);
 }
 
 describe('UsersComponent', () => {
@@ -23,6 +27,7 @@ describe('UsersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule],
       declarations: [UsersComponent],
       providers: [{ provide: UsersService, useClass: MockUserService }]
     }).compileComponents();
@@ -42,19 +47,29 @@ describe('UsersComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should resolve the promise and show the users list', fakeAsync(() => {
-    spyOn(service, 'getUsers').and.callFake(() =>
-      Promise.resolve([{ name: 'John Doe' }, { name: 'Jane Doe' }])
+  it('should search users', fakeAsync(() => {
+    const getLoader = () => debugEl.query(By.css('.loading'));
+
+    spyOn(service, 'search').and.callFake(() =>
+      timer(100).pipe(mapTo([{ name: 'John Doe' }, { name: 'Jane Doe' }]))
     );
     component.ngOnInit();
-
     fixture.detectChanges();
-    // Resolve all Promises
-    flushMicrotasks();
 
+    // Search
+    component.searchControl.patchValue('42');
+    tick(100);
+    fixture.detectChanges();
+    expect(getLoader()).toBeTruthy();
+
+    // Advance the clock by 100 milliseconds to run userService.search()
+    tick(100);
     fixture.detectChanges();
     const itemsCount = debugEl.queryAll(By.css('li')).length;
 
+    expect(service.search).toHaveBeenCalledTimes(1);
+    expect(service.search).toHaveBeenCalledWith('42');
+    expect(getLoader()).toBeFalsy();
     expect(itemsCount).toBe(2);
   }));
 });

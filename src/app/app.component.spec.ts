@@ -3,11 +3,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { AppComponent } from './app.component';
 import { UsersComponent } from './users/users.component';
+import { TimerComponent } from './timer/timer.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, UsersComponent],
+      declarations: [AppComponent, UsersComponent, TimerComponent],
       imports: [HttpClientTestingModule]
     }).compileComponents();
   }));

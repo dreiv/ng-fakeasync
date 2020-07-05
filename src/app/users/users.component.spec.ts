@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 import { UsersComponent } from './users.component';
+import { UsersService } from '../users.service';
+
+class MockUserService {
+  getUsers = () => of([]);
+}
 
 describe('UsersComponent', () => {
   let component: UsersComponent;
@@ -8,9 +14,9 @@ describe('UsersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UsersComponent ]
-    })
-    .compileComponents();
+      declarations: [UsersComponent],
+      providers: [{ provide: UsersService, useClass: MockUserService }]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

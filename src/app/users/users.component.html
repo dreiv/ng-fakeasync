@@ -1,9 +1,5 @@
-<input [formControl]="searchControl" />
-
-<p *ngIf="loading" class="loading">loading...</p>
-
 <ul>
-  <li *ngFor="let user of users$ | async">
+  <li *ngFor="let user of users | async">
     {{ user.name }}
   </li>
 </ul>

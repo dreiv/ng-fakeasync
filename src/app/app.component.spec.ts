@@ -5,6 +5,8 @@ import { AppComponent } from './app.component';
 import { UsersComponent } from './users/users.component';
 import { TimerComponent } from './timer/timer.component';
 import { IntervalComponent } from './interval/interval.component';
+import { ListComponent } from './list/list.component';
+import { AnimationFrameComponent } from './animation-frame/animation-frame.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -12,8 +14,10 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent,
         UsersComponent,
+        ListComponent,
         TimerComponent,
-        IntervalComponent
+        IntervalComponent,
+        AnimationFrameComponent
       ],
       imports: [HttpClientTestingModule]
     }).compileComponents();

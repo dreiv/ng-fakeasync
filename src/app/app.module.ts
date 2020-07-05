@@ -6,9 +6,10 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { UsersComponent } from './users/users.component';
 import { TimerComponent } from './timer/timer.component';
+import { IntervalComponent } from './interval/interval.component';
 
 @NgModule({
-  declarations: [AppComponent, UsersComponent, TimerComponent],
+  declarations: [AppComponent, UsersComponent, TimerComponent, IntervalComponent],
   imports: [BrowserModule, HttpClientModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent]
